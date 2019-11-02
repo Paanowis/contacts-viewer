@@ -20,10 +20,19 @@ export default class Contacts extends Component {
         })
     }
 
+    deleteContact = (id) => {
+        const contacts = this.state.contacts.filter(contact =>{
+            return contact.id !== id
+        });
+        this.setState({
+            contacts: contacts
+        })
+    }
+
     render() {
         const allContacts = this.state.contacts.map(contact => {
             return (
-                <Contact key={contact.id} contact={contact} />
+                <Contact key={contact.id} contact={contact} deleteContact={this.deleteContact} />
             )
         })
 

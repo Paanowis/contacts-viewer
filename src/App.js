@@ -1,17 +1,18 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Form from './components/Form';
-import Contacts from './components/Contacts';
+import ContactsProvider from './components/Contacts';
 
 
 function App() {
 
   return (
     <BrowserRouter>
-      <div className="App">
-        <Route exact path='/' component={Contacts} />
-        <Route exact path='/form' component={Form} />
-      </div>
+      <ContactsProvider>
+        <div className="App">
+          <Route exact path='/form' component={Form} />
+        </div>
+      </ContactsProvider>
     </BrowserRouter>
   );
 }

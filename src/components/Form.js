@@ -3,8 +3,11 @@ import NavbarForm from './NavbarForm';
 import ListItems from './ListItems';
 import placeholder from '../placeholder';
 import { Link } from 'react-router-dom';
+import { ContactsContext } from './Contacts';
 
 export default class Form extends Component {
+    static contextType = ContactsContext;
+
     state = {
         name: "",
         company: "",
@@ -12,6 +15,14 @@ export default class Form extends Component {
         phone: "",
         address: "",
         group: ""
+    }
+
+    addContact = (contact) => {
+        contact.id = Math.random();
+        let contacts = [...this.context.contacts, contact];
+        this.setState({
+            contacts: contacts
+        })
     }
 
     handleChange = (e) => {
@@ -22,18 +33,19 @@ export default class Form extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.addContact(this.state);
+        this.addContact(this.state);
         this.setState({
-            name: "",
-            company: "",
-            email: "",
-            phone: "",
-            address: "",
+            name: " ",
+            company: " ",
+            email: " ",
+            phone: " ",
+            address: " ",
             group: ""
         })
     }
 
     render() {
+        console.log(this.context.contacts)
         return (
             <form onSubmit={this.handleSubmit} className="form">
                 <NavbarForm />
@@ -61,6 +73,7 @@ export default class Form extends Component {
                                                             type="text"
                                                             id="name"
                                                             required
+                                                            value={this.state.name}
                                                             onChange={this.handleChange}
                                                             className="form-control" />
                                                     </div>
@@ -73,6 +86,7 @@ export default class Form extends Component {
                                                             type="text"
                                                             id="company"
                                                             required
+                                                            value={this.state.company}
                                                             onChange={this.handleChange}
                                                             className="form-control" />
                                                     </div>
@@ -85,6 +99,7 @@ export default class Form extends Component {
                                                             type="text"
                                                             id="email"
                                                             required
+                                                            value={this.state.email}
                                                             onChange={this.handleChange}
                                                             className="form-control" />
                                                     </div>
@@ -97,6 +112,7 @@ export default class Form extends Component {
                                                             type="number"
                                                             id="phone"
                                                             required
+                                                            value={this.state.phone}
                                                             onChange={this.handleChange}
                                                             className="form-control" />
                                                     </div>
@@ -105,19 +121,19 @@ export default class Form extends Component {
                                                 <div className="form-group">
                                                     <label htmlFor="address" className="control-label col-md-3">Address</label>
                                                     <div className="col-md-8">
-                                                        <textarea rows="3" id="address" required
-                                                        onChange={this.handleChange} className="form-control"></textarea>
+                                                        <textarea rows="3" id="address" required value={this.state.address}
+                                                            onChange={this.handleChange} className="form-control"></textarea>
                                                     </div>
                                                 </div>
 
                                                 <div className="form-group">
                                                     <label htmlFor="group" className="control-label col-md-3">Group</label>
                                                     <div className="col-md-5">
-                                                        <select id="group" className="form-control">
+                                                        <select id="group" value={this.state.group} onChange={this.handleChange} className="form-control">
                                                             <option value="">Select Group</option>
-                                                            <option value="1">Family</option>
-                                                            <option value="2">Friends</option>
-                                                            <option value="3">Others</option>
+                                                            <option value="Family">Family</option>
+                                                            <option value="Friends">Friends</option>
+                                                            <option value="Others">Others</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -125,10 +141,10 @@ export default class Form extends Component {
                                             </div>
                                             <div className="col-md-4">
                                                 <div className="fileinput fileinput-new" data-provides="fileinput">
-                                                    <div className="fileinput-new thumbnail" style={{width: 150+'px', height: 150+'px'}}>
+                                                    <div className="fileinput-new thumbnail" style={{ width: 150 + 'px', height: 150 + 'px' }}>
                                                         <img src={placeholder} />
                                                     </div>
-                                                    <div className="fileinput-preview fileinput-exists thumbnial" style={{maxWidth: 200+'px', height:200+'px'}}></div>
+                                                    <div className="fileinput-preview fileinput-exists thumbnial" style={{ maxWidth: 200 + 'px', height: 200 + 'px' }}></div>
                                                     <div className="text-center">
                                                         <span className="btn btn-default btn-file"><span className="fileinput-new">Choose photo</span><span className="fileinput-exists">Change</span><input type="file" name="..." /></span>
                                                         <a href="#" className="btn btn-default fileinput-exists" data-dismiss="fileinput"></a>
@@ -145,7 +161,7 @@ export default class Form extends Component {
                                             <div className="row">
                                                 <div className="col-md-offset-3 col-md-6">
                                                     <button type="submit" className="btn btn-primary">Save</button>
-                                                    <button className="btn button btn-default" style={{marginLeft: 10+'px'}}><Link to="/" style={{textDecoration: 'none', color: '#000'}}>Cancel</Link></button>
+                                                    <button className="btn button btn-default" style={{ marginLeft: 10 + 'px' }}><Link to="/" style={{ textDecoration: 'none', color: '#000' }}>Cancel</Link></button>
                                                 </div>
                                             </div>
                                         </div>

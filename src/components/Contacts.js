@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, createContext } from 'react';
 import ListItems from './ListItems';
 import Contact from './Contact';
 import { Link } from 'react-router-dom';
-import Form from './Form';
 
-export default class Contacts extends Component {
+export const ContactsContext = createContext()
+
+export default class ContactsProvider extends Component {
     state = {
         contacts: [
             { name: 'Simon', company: 'Google Inc.', email: 'paanowis10@gmail.com', phone: '0557222234', address: 'Teshie-Nungua', group: 'Family', id: 1 },
@@ -14,14 +15,14 @@ export default class Contacts extends Component {
 
     addContact = (contact) => {
         contact.id = Math.random();
-        let contacts = { ...this.state.contacts, contact };
+        let contacts = [...this.state.contacts, contact];
         this.setState({
             contacts: contacts
         })
     }
 
     deleteContact = (id) => {
-        const contacts = this.state.contacts.filter(contact =>{
+        const contacts = this.state.contacts.filter(contact => {
             return contact.id !== id
         });
         this.setState({
@@ -29,15 +30,32 @@ export default class Contacts extends Component {
         })
     }
 
+    editContact = (id, editedContact) => {
+        const editedContacts = this.state.contacts.map(contact => {
+            if (contact.id === id) {
+                return { ...contact, ...editedContact }
+            }
+            return contact;
+        });
+        this.setState({
+            contacts: editedContacts
+        })
+    }
+
     render() {
         const allContacts = this.state.contacts.map(contact => {
             return (
-                <Contact key={contact.id} contact={contact} deleteContact={this.deleteContact} />
+                <Contact key={contact.id} contact={contact} deleteContact={this.deleteContact} editContact={this.editContact} />
             )
         })
 
         return (
             <div className="contacts">
+                <div>
+                    <ContactsContext.Provider value={{ ...this.state }} >
+                        {this.props.children}
+                    </ContactsContext.Provider>
+                </div>
                 <nav className="navbar navbar-default">
                     <div className="container">
                         <div className="navbar-header">

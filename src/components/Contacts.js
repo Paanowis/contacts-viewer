@@ -52,7 +52,7 @@ export default class ContactsProvider extends Component {
         return (
             <div className="contacts">
                 <div>
-                    <ContactsContext.Provider value={{ ...this.state }} >
+                    <ContactsContext.Provider value={{ ...this.state, addContact: this.addContact }} >
                         {this.props.children}
                     </ContactsContext.Provider>
                 </div>

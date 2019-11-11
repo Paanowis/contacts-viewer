@@ -17,14 +17,6 @@ export default class Form extends Component {
         group: ""
     }
 
-    addContact = (contact) => {
-        contact.id = Math.random();
-        let contacts = [...this.context.contacts, contact];
-        this.setState({
-            contacts: contacts
-        })
-    }
-
     handleChange = (e) => {
         this.setState({
             [e.target.id]: e.target.value
@@ -33,7 +25,7 @@ export default class Form extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.addContact(this.state);
+        this.context.addContact(this.state);
         this.setState({
             name: " ",
             company: " ",
@@ -45,7 +37,8 @@ export default class Form extends Component {
     }
 
     render() {
-        console.log(this.context.contacts)
+        console.log(this.context);
+        
         return (
             <form onSubmit={this.handleSubmit} className="form">
                 <NavbarForm />
